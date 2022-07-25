@@ -19,6 +19,7 @@ DEBUG = env.bool('DEBUG', True)
 # Application definition
 
 INSTALLED_APPS = [
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -27,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
 
+    'phonenumber_field',
     'property.apps.PropertyConfig',
 ]
 
