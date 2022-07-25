@@ -4,9 +4,11 @@ from django.contrib.auth.models import User
 from phonenumber_field.modelfields import PhoneNumberField
 
 
+
 class Flat(models.Model):
     owner = models.CharField('ФИО владельца', max_length=200)
-    owners_phonenumber = PhoneNumberField('Нормализованный номер владельца', blank=True)
+    owners_phonenumber = models.CharField('Номер владельца', max_length=20)
+    owner_pure_phone = PhoneNumberField('Нормализованный номер владельца', blank=True)
     created_at = models.DateTimeField(
         'Когда создано объявление',
         default=timezone.now,
@@ -50,7 +52,7 @@ class Flat(models.Model):
         db_index=True)
 
     new_building = models.BooleanField('Новостройка', null=True, blank=True,)
-    liked_by = models.ManyToManyField(User, verbose_name='кто лайкнул', related_name="liked_flats",)
+    liked_by = models.ManyToManyField(User, verbose_name='кто лайкнул', related_name="liked_flats", blank=True,)
 
 
     def __str__(self):
