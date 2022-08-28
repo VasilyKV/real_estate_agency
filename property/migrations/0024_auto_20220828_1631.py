@@ -6,15 +6,18 @@ def get_flat_owners(apps, schema_editor):
     Flat = apps.get_model('property', 'Flat')
     Owner = apps.get_model('property', 'Owner')
     for flat in Flat.objects.all():
-        Owner.objects.get_or_create(
-            name=flat.owner, 
-            phonenumber=flat.owners_phonenumber,
-            pure_phone=flat.owner_pure_phone 
-        )
+        flat_owner = Owner.objects.get(name=flat.owner, phonenumber=flat.owners_phonenumber)
+        flat_owner.flats.add(flat)
+        flat_owner.save
+
 
 def move_backward(apps, schema_editor):
+    Flat = apps.get_model('property', 'Flat')
     Owner = apps.get_model('property', 'Owner')
-    Owner.objects.all().delete
+    for flat in Flat.objects.all():
+        flat_owner = Owner.objects.get(name=flat.owner, phonenumber=flat.owners_phonenumber)
+        flat_owner.flats = None
+        flat_owner.save
 
 class Migration(migrations.Migration):
 
