@@ -64,13 +64,23 @@ class Complaint(models.Model):
     сomplaint_text = models.TextField( 'текс жалобы')
 
 class Owner(models.Model):
-    owner = models.CharField('ФИО владельца', max_length=200)
-    owners_phonenumber = models.CharField('Номер владельца', max_length=20)
-    owner_pure_phone = PhoneNumberField(
+    name = models.CharField(
+        'ФИО владельца', 
+        max_length=200,
+        null=True, 
+        blank=True,
+        db_index=True)
+
+    phonenumber = models.CharField('Номер владельца', max_length=20)
+    
+    pure_phone = PhoneNumberField(
         'Нормализованный номер владельца', 
         null=True, 
         blank=True)
-    owners_flats = models.ManyToManyField(
+    flats = models.ManyToManyField(
         Flat, 
         verbose_name='Квартиры в собственности', 
         related_name="flat_owners",)
+
+    def __str__(self):
+        return f'{self.name}'
