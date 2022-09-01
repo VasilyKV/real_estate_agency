@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from phonenumber_field.modelfields import PhoneNumberField
 
 
-
 class Flat(models.Model):
     created_at = models.DateTimeField(
         'Когда создано объявление',
@@ -30,7 +29,6 @@ class Flat(models.Model):
         'Этаж',
         max_length=3,
         help_text='Первый этаж, последний этаж, пятый этаж')
-
     rooms_number = models.IntegerField(
         'Количество комнат в квартире',
         db_index=True)
@@ -49,34 +47,38 @@ class Flat(models.Model):
         db_index=True)
 
     new_building = models.BooleanField('Новостройка', null=True, blank=True,)
-    liked_by = models.ManyToManyField(User, verbose_name='кто лайкнул', related_name="liked_flats", blank=True,)
-
+    liked_by = models.ManyToManyField(
+        User, verbose_name='кто лайкнул', related_name="liked_flats", blank=True,)
 
     def __str__(self):
         return f'{self.town}, {self.address} ({self.price}р.)'
 
+
 class Complaint(models.Model):
-    user = models.ForeignKey(User, verbose_name='кто жаловался', on_delete=models.CASCADE)
-    flat = models.ForeignKey(Flat, verbose_name='квартира, на которую пожаловались', on_delete=models.CASCADE)
-    сomplaint_text = models.TextField( 'текс жалобы')
+    user = models.ForeignKey(
+        User, verbose_name='кто жаловался', on_delete=models.CASCADE)
+    flat = models.ForeignKey(
+        Flat, verbose_name='квартира, на которую пожаловались', on_delete=models.CASCADE)
+    сomplaint_text = models.TextField('текс жалобы')
+
 
 class Owner(models.Model):
     name = models.CharField(
-        'ФИО владельца', 
+        'ФИО владельца',
         max_length=200,
-        null=True, 
+        null=True,
         blank=True,
         db_index=True)
 
     phonenumber = models.CharField('Номер владельца', max_length=20)
 
     pure_phone = PhoneNumberField(
-        'Нормализованный номер владельца', 
-        null=True, 
+        'Нормализованный номер владельца',
+        null=True,
         blank=True)
     flats = models.ManyToManyField(
-        Flat, 
-        verbose_name='Квартиры в собственности', 
+        Flat,
+        verbose_name='Квартиры в собственности',
         related_name="flat_owners",)
 
     def __str__(self):
