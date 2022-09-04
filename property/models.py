@@ -66,7 +66,6 @@ class Owner(models.Model):
     name = models.CharField(
         'ФИО владельца',
         max_length=200,
-        null=True,
         blank=True,
         db_index=True)
 
