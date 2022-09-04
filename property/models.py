@@ -87,4 +87,4 @@ class Owner(models.Model):
         related_name="owners",)
 
     def __str__(self):
-        return f'{self.name}'
+        return {self.name}
