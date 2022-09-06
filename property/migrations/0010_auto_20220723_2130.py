@@ -5,20 +5,20 @@ from django.db import migrations
 
 def get_new_building(apps, schema_editor):
     Flat = apps.get_model('property', 'Flat')
-    for flat in Flat.objects.all():
+    for flat in Flat.objects.all().iterator():
         flat.new_building = (flat.construction_year > 2014)
         flat.save()
 
 def move_backward(apps, schema_editor):
     Flat = apps.get_model('property', 'Flat')
-    for flat in Flat.objects.all():
+    for flat in Flat.objects.all().iterator():
         flat.new_building = None
         flat.save() 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('property', '0009_auto_20220723_2058'),
+        ('property', '0003_flat_new_building'),
     ]
 
     operations = [

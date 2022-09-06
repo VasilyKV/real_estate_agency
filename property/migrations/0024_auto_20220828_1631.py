@@ -5,7 +5,7 @@ from django.db import migrations
 def get_flat_owners(apps, schema_editor):
     Flat = apps.get_model('property', 'Flat')
     Owner = apps.get_model('property', 'Owner')
-    for flat in Flat.objects.all():
+    for flat in Flat.objects.all().iterator():
         flat_owner = Owner.objects.get(name=flat.owner, phonenumber=flat.owners_phonenumber)
         flat_owner.flats.add(flat)
         flat_owner.save
@@ -14,7 +14,7 @@ def get_flat_owners(apps, schema_editor):
 def move_backward(apps, schema_editor):
     Flat = apps.get_model('property', 'Flat')
     Owner = apps.get_model('property', 'Owner')
-    for flat in Flat.objects.all():
+    for flat in Flat.objects.all().iterator():
         flat_owner = Owner.objects.get(name=flat.owner, phonenumber=flat.owners_phonenumber)
         flat_owner.flats = None
         flat_owner.save

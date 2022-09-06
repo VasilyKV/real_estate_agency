@@ -5,7 +5,7 @@ import phonenumbers
 
 def get_pure_phone(apps, schema_editor):
     Flat = apps.get_model('property', 'Flat')
-    for flat in Flat.objects.all():
+    for flat in Flat.objects.all().iterator():
         parsed_phone = phonenumbers.parse(flat.owners_phonenumber, 'RU')
         if phonenumbers.is_valid_number(parsed_phone):
             flat.owner_pure_phone = f'+{parsed_phone.country_code}{parsed_phone.national_number}'
@@ -13,8 +13,7 @@ def get_pure_phone(apps, schema_editor):
 
 def move_backward(apps, schema_editor):
     Flat = apps.get_model('property', 'Flat')
-    Flat.objects.all()
-    for flat in Flat.objects.all():
+    for flat in Flat.objects.all().iterator():
         flat.owner_pure_phone = None
         flat.save()
 
